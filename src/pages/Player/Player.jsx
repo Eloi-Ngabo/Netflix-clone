@@ -36,7 +36,7 @@ fetch(`https://api.themoviedb.org/3/movie/${id}/videos?
 
   return (
     <div className='player'>
-      <img src={back_arrow_icon} alt="" onClick={()=>{navigate(-2)}}/>
+      <img src={back_arrow_icon} alt="" onClick={()=> navigate('/')}/>
       <iframe width='90%' height='90%'
        src={`https://www.youtube.com/embed/${apiData.key}`}
        title='trailer' frameBorder='0' allowFullScreen></iframe>
