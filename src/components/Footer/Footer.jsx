@@ -17,9 +17,9 @@ const Footer = () => {
       </div>
       <ul>
         <li>Audio Description</li>
-        <li>Help Centre</li>
+        <li>Help Center</li>
         <li>Gift Cards</li>
-        <li>Media centra</li>
+        <li>Media center</li>
         <li>Investor Relations</li>
         <li>Jobs</li>
         <li>Terms of Use</li>
