@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './TitleCards.css'
-import cards_data from '../../assets/cards/Cards_data'
 import { Link } from 'react-router-dom';
 
 
@@ -9,27 +8,38 @@ const TitleCards = ({title, category}) => {
 const [apiData, setApiData] = useState([]);
 const cardsRef = useRef();
 
-const options = {
+const options = useMemo(() => ({
   method: 'GET',
   headers: {
     accept: 'application/json',
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZGFkYjQzMmU2YTc0OWQ5ODhjYjYyMzE4NzFkODZjNSIsIm5iZiI6MTc3ODg4NzEwMC41NDgsInN1YiI6IjZhMDdhOWJjZmI4MGY2ODJjMzY2M2Q0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ihmkc6svPL7C1UFz52kQSZMt_YGDnOpuJ2Hh9wceKOI'
   }
-};
+}), []);
 
-const handleWheel = (event) => {
+const handleWheel = useCallback((event) => {
   event.preventDefault();
-  cardsRef.current.scrollLeft += event.deltay;
-}
+  if (cardsRef.current) {
+    cardsRef.current.scrollLeft += event.deltaY;
+  }
+}, []);
+
 useEffect(() => {
+  fetch(`https://api.themoviedb.org/3/movie/${category ? category : 'now_playing'}?language=en-US&page=1`, options)
+    .then(res => res.json())
+    .then(res => setApiData(res.results))
+    .catch(err => console.error(err));
+}, [category, options]);
 
-  fetch(`https://api.themoviedb.org/3/movie/${category?category:"now_playing"}?language=en-US&page=1`, options)
-  .then(res => res.json())
-  .then(res => setApiData(res.results))
-  .catch(err => console.error(err));
+useEffect(() => {
+  const cardList = cardsRef.current;
+  if (!cardList) return;
 
-  cardsRef.current.addEventListener('wheel', handleWheel);
-},[])
+  cardList.addEventListener('wheel', handleWheel, { passive: false });
+
+  return () => {
+    cardList.removeEventListener('wheel', handleWheel);
+  };
+}, [handleWheel]);
 
   return (
     <div className='title-cards'>

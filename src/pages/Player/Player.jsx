@@ -14,25 +14,26 @@ const Player = () => {
     name: "",
     key: "",
     published_at: "",
-    typeof: ""
+    type: ""
   })
 
-
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZGFkYjQzMmU2YTc0OWQ5ODhjYjYyMzE4NzFkODZjNSIsIm5iZiI6MTc3ODg4NzEwMC41NDgsInN1YiI6IjZhMDdhOWJjZmI4MGY2ODJjMzY2M2Q0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ihmkc6svPL7C1UFz52kQSZMt_YGDnOpuJ2Hh9wceKOI'
-  }
-};
-
 useEffect(()=>{
-fetch(`https://api.themoviedb.org/3/movie/${id}/videos?
-  language=en-US`, options)
-  .then(res => res.json())
-  .then(res => setApiData(res.results[0]))
-  .catch(err => console.error(err));
-},[])
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZGFkYjQzMmU2YTc0OWQ5ODhjYjYyMzE4NzFkODZjNSIsIm5iZiI6MTc3ODg4NzEwMC41NDgsInN1YiI6IjZhMDdhOWJjZmI4MGY2ODJjMzY2M2Q0ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ihmkc6svPL7C1UFz52kQSZMt_YGDnOpuJ2Hh9wceKOI'
+    }
+  };
+
+  fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`, options)
+    .then(res => res.json())
+    .then(res => {
+      const trailer = res.results?.[0];
+      if (trailer) setApiData(trailer);
+    })
+    .catch(err => console.error(err));
+}, [id])
 
   return (
     <div className='player'>
