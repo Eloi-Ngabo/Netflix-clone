@@ -23,7 +23,8 @@ import 'react-toastify/dist/ReactToastify.css'
          navigate('/login')
       }
     })
-  },[navigate])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
 
   return (
